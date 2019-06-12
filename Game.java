@@ -12,14 +12,17 @@ public class Game extends JPanel implements KeyListener, Runnable
 	private JFrame frame;
 	Thread t;
 	private boolean gameOn;
-	BufferedImage guy;
-	BufferedImage[] guys=new BufferedImage[11];
+	BufferedImage spriteSheet;
+	BufferedImage[] marioBuffImg = new BufferedImage[12];
+	Image[] marioImgs = new Image[12];
+
 	boolean restart=false;
 	int imgCount=0;
-	Polygon poly;
-	Polygon poly2;
 
-	BufferedImage[] bgs = new BufferedImage[7];
+
+	BufferedImage[] bgs = new BufferedImage[5];
+	Image[] bgImgs = new Image[5];
+
 
 	private boolean right = false;
 	private boolean left = false;
@@ -34,25 +37,26 @@ public class Game extends JPanel implements KeyListener, Runnable
 		gameOn=true;
 
 		try {
-			guy = ImageIO.read(new File("st1.png"));
-			for(int x=0;x<11;x++)
-				guys[x]=guy.getSubimage(x*81,81,85,85);
+			spriteSheet = ImageIO.read(new File("res/mario.gif"));
+			for(int x=0;x<marioBuffImg.length;x++)
+				marioBuffImg[x]=spriteSheet.getSubimage(x*20+59,120,20,25);
 
-			for (int i=0;i<7;i++)
+			for (int i=0;i<5;i++)
 				bgs[i] = ImageIO.read(new File("res/layer_0"+(i+1)+"_1920 x 1080.png" ));
 
 		}
 		catch (IOException e) {
+			System.out.println("Hello?");
+
 		}
-		int[] x={1,2,3};
-		int[] y={4,5,6};
-
-		poly=new Polygon(x,y, x.length);
-
-		poly2=new Polygon();
-		poly2.addPoint(1,4);
-		poly2.addPoint(2,5);
-		poly2.addPoint(3,6);
+		
+		for(int x=0;x<bgs.length;x++)
+		{
+			bgImgs[x]=bgs[x].getScaledInstance(1920, 500, Image.SCALE_DEFAULT);
+		}
+		
+		for(int x=0;x<marioImgs.length;x++)
+			marioImgs[x]=marioBuffImg[x].getScaledInstance(100, 100, Image.SCALE_DEFAULT);
 
 		frame.addKeyListener(this);
 		frame.add(this);
@@ -70,14 +74,14 @@ public class Game extends JPanel implements KeyListener, Runnable
 			if(gameOn){
 				//Math happens here!
 				if (right){
-					x+=3;
+					//x+=3;
 					backX-=3;
 					imgCount++;
 					if(imgCount>10)
 						imgCount=0;
 				}
 				if (left){
-					x-=3;
+					//x-=3;
 					backX+=3;
 					imgCount--;
 					if(imgCount<0)
@@ -95,7 +99,10 @@ public class Game extends JPanel implements KeyListener, Runnable
 					if(imgCount>10)
 						imgCount=0;
 				}
-
+				if(backX<-1920)
+					backX=0;
+				if(backX>1920)
+					backX=0;	
 				repaint();
 			}
 			if(restart){
@@ -114,12 +121,13 @@ public class Game extends JPanel implements KeyListener, Runnable
 		Graphics2D g2d = (Graphics2D)g;
 
 		//all painting happens here!
-		for (BufferedImage myImage: bgs){
+		for (Image myImage: bgImgs){
+			g2d.drawImage(myImage, backX-960-1920, 0, null);
 			g2d.drawImage(myImage, backX-960, 0, null);
 			g2d.drawImage(myImage, backX+960, 0, null);
 		}
-		g2d.drawImage(guys[imgCount].getScaledInstance(200, 200, Image.SCALE_DEFAULT),x,y,null);
-
+		g2d.drawImage(marioBuffImg[imgCount],100,100,null);
+		//g2d.drawImage(spriteSheet,100,100,null);
 
 	}
 	public void keyPressed(KeyEvent key){
