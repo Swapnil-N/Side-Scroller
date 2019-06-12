@@ -8,6 +8,7 @@ public class Game extends JPanel implements KeyListener, Runnable
 {
 	private int x;
 	private int y;
+	private int backX;
 	private JFrame frame;
 	Thread t;
 	private boolean gameOn;
@@ -17,6 +18,8 @@ public class Game extends JPanel implements KeyListener, Runnable
 	int imgCount=0;
 	Polygon poly;
 	Polygon poly2;
+
+	BufferedImage[] bgs = new BufferedImage[7];
 
 	private boolean right = false;
 	private boolean left = false;
@@ -35,6 +38,8 @@ public class Game extends JPanel implements KeyListener, Runnable
 			for(int x=0;x<11;x++)
 				guys[x]=guy.getSubimage(x*81,81,85,85);
 
+			for (int i=0;i<7;i++)
+				bgs[i] = ImageIO.read(new File("res/layer_0"+(i+1)+"_1920 x 1080.png" ));
 
 		}
 		catch (IOException e) {
@@ -65,13 +70,15 @@ public class Game extends JPanel implements KeyListener, Runnable
 			if(gameOn){
 				//Math happens here!
 				if (right){
-					x+=5;
+					x+=3;
+					backX-=3;
 					imgCount++;
 					if(imgCount>10)
 						imgCount=0;
 				}
 				if (left){
-					x-=5;
+					x-=3;
+					backX+=3;
 					imgCount--;
 					if(imgCount<0)
 						imgCount=10;
@@ -107,15 +114,12 @@ public class Game extends JPanel implements KeyListener, Runnable
 		Graphics2D g2d = (Graphics2D)g;
 
 		//all painting happens here!
-
-		g2d.setColor(Color.YELLOW);
-		g2d.fillRect(50,50,350,350);
-		g2d.setColor(Color.BLACK);
+		for (BufferedImage myImage: bgs){
+			g2d.drawImage(myImage, backX-960, 0, null);
+			g2d.drawImage(myImage, backX+960, 0, null);
+		}
 		g2d.drawImage(guys[imgCount].getScaledInstance(200, 200, Image.SCALE_DEFAULT),x,y,null);
-		g2d.setColor(Color.MAGENTA);
-		GradientPaint gp = new GradientPaint((float)0.0, (float)0.0, Color.BLUE, (float)500.0, (float)500, Color.WHITE, true);
-		g2d.setPaint(gp);
-		g2d.drawLine(100,100,500,500);
+
 
 	}
 	public void keyPressed(KeyEvent key){
