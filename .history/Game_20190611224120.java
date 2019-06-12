@@ -59,8 +59,8 @@ public class Game extends JPanel implements KeyListener, Runnable
 		t.start();
 	}
 
-	public void run(){
-
+	public void run()
+	{
 		while(true){
 			if(gameOn){
 				//Math happens here!
@@ -68,18 +68,22 @@ public class Game extends JPanel implements KeyListener, Runnable
 
 				repaint();
 			}
-			if(restart){
+			if(restart)
+			{
 				restart=false;
 				gameOn=true;
 			}
-			try{
+			try
+			{
 				t.sleep(10);
-			}catch(InterruptedException e){}
+			}catch(InterruptedException e)
+			{
+			}
 		}
 	}
 
-	public void paintComponent(Graphics g){
-		
+	public void paintComponent(Graphics g)
+	{
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D)g;
 
