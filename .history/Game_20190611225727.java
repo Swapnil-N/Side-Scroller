@@ -85,9 +85,10 @@ public class Game extends JPanel implements KeyListener, Runnable
 				if (down){
 					y+=5;
 					imgCount++;
-					if(imgCount>10)
-						imgCount=0;
+					if(imgCount0)
+						imgCount=10;
 				}
+
 
 				repaint();
 			}

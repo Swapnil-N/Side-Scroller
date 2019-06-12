@@ -89,6 +89,7 @@ public class Game extends JPanel implements KeyListener, Runnable
 						imgCount=0;
 				}
 
+
 				repaint();
 			}
 			if(restart){

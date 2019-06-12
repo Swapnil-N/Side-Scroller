@@ -2,10 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.lang.*;
+import java.math.*;
 import java.awt.image.*;
+import java.applet.*;
+import javax.swing.border.*;
 import javax.imageio.ImageIO;
 public class Game extends JPanel implements KeyListener, Runnable
 {
+	private float angle;
 	private int x;
 	private int y;
 	private JFrame frame;
@@ -17,11 +22,6 @@ public class Game extends JPanel implements KeyListener, Runnable
 	int imgCount=0;
 	Polygon poly;
 	Polygon poly2;
-
-	private boolean right = false;
-	private boolean left = false;
-	private boolean up = false;
-	private boolean down = false;
 
 	public Game()
 	{
@@ -64,30 +64,7 @@ public class Game extends JPanel implements KeyListener, Runnable
 		while(true){
 			if(gameOn){
 				//Math happens here!
-				if (right){
-					x+=5;
-					imgCount++;
-					if(imgCount>10)
-						imgCount=0;
-				}
-				if (left){
-					x-=5;
-					imgCount--;
-					if(imgCount<0)
-						imgCount=10;
-				}
-				if (up){
-					y-=5;
-					imgCount--;
-					if(imgCount<0)
-						imgCount=10;
-				}
-				if (down){
-					y+=5;
-					imgCount++;
-					if(imgCount>10)
-						imgCount=0;
-				}
+
 
 				repaint();
 			}
@@ -121,7 +98,12 @@ public class Game extends JPanel implements KeyListener, Runnable
 	public void keyPressed(KeyEvent key){
 
 		System.out.println(key.getKeyCode());
-
+		if(key.getKeyCode()==39){ //right   left=37; up=38; down=40
+			x+=5;
+			imgCount++;
+			if(imgCount>10)
+				imgCount=0;
+		}
 		if(key.getKeyCode()==39) // right
 			right = true;
 		if(key.getKeyCode()==37) // left
@@ -136,13 +118,13 @@ public class Game extends JPanel implements KeyListener, Runnable
 	}
 	public void keyReleased(KeyEvent key){
 
-		if(key.getKeyCode()==39) // right
+		if(ke.getKeyCode()==39) // right
 			right = false;
-		if(key.getKeyCode()==37) // left
+		if(ke.getKeyCode()==37) // left
 			left = false;
-		if(key.getKeyCode()==38) // up
+		if(ke.getKeyCode()==38) // up
 			up = false;
-		if(key.getKeyCode()==40) //down
+		if(ke.getKeyCode()==40) //down
 			down = false;
 
 	}

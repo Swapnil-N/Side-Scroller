@@ -2,10 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.lang.*;
+import java.math.*;
 import java.awt.image.*;
+import java.applet.*;
+import javax.swing.border.*;
 import javax.imageio.ImageIO;
 public class Game extends JPanel implements KeyListener, Runnable
 {
+	private float angle;
 	private int x;
 	private int y;
 	private JFrame frame;
@@ -17,11 +22,6 @@ public class Game extends JPanel implements KeyListener, Runnable
 	int imgCount=0;
 	Polygon poly;
 	Polygon poly2;
-
-	private boolean right = false;
-	private boolean left = false;
-	private boolean up = false;
-	private boolean down = false;
 
 	public Game()
 	{
@@ -64,30 +64,7 @@ public class Game extends JPanel implements KeyListener, Runnable
 		while(true){
 			if(gameOn){
 				//Math happens here!
-				if (right){
-					x+=5;
-					imgCount++;
-					if(imgCount>10)
-						imgCount=0;
-				}
-				if (left){
-					x-=5;
-					imgCount--;
-					if(imgCount<0)
-						imgCount=10;
-				}
-				if (up){
-					y-=5;
-					imgCount--;
-					if(imgCount<0)
-						imgCount=10;
-				}
-				if (down){
-					y+=5;
-					imgCount++;
-					if(imgCount>10)
-						imgCount=0;
-				}
+
 
 				repaint();
 			}
@@ -118,33 +95,21 @@ public class Game extends JPanel implements KeyListener, Runnable
 		g2d.drawLine(100,100,500,500);
 
 	}
-	public void keyPressed(KeyEvent key){
-
+	public void keyPressed(KeyEvent key)
+	{
 		System.out.println(key.getKeyCode());
-
-		if(key.getKeyCode()==39) // right
-			right = true;
-		if(key.getKeyCode()==37) // left
-			left = true;
-		if(key.getKeyCode()==38) // up
-			up = true;
-		if(key.getKeyCode()==40) //down
-			down = true;
-			
+		if(key.getKeyCode()==39) //right   left=37; 
+		{
+			x+=5;
+			imgCount++;
+			if(imgCount>10)
+				imgCount=0;
+		}
 		if(key.getKeyCode()==82) // R
 			restart=true;
 	}
-	public void keyReleased(KeyEvent key){
-
-		if(key.getKeyCode()==39) // right
-			right = false;
-		if(key.getKeyCode()==37) // left
-			left = false;
-		if(key.getKeyCode()==38) // up
-			up = false;
-		if(key.getKeyCode()==40) //down
-			down = false;
-
+	public void keyReleased(KeyEvent key)
+	{
 	}
 	public void keyTyped(KeyEvent key)
 	{

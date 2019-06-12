@@ -2,10 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.lang.*;
+import java.math.*;
 import java.awt.image.*;
+import java.applet.*;
+import javax.swing.border.*;
 import javax.imageio.ImageIO;
 public class Game extends JPanel implements KeyListener, Runnable
 {
+	private float angle;
 	private int x;
 	private int y;
 	private JFrame frame;
@@ -76,18 +81,7 @@ public class Game extends JPanel implements KeyListener, Runnable
 					if(imgCount<0)
 						imgCount=10;
 				}
-				if (up){
-					y-=5;
-					imgCount--;
-					if(imgCount<0)
-						imgCount=10;
-				}
-				if (down){
-					y+=5;
-					imgCount++;
-					if(imgCount>10)
-						imgCount=0;
-				}
+
 
 				repaint();
 			}
