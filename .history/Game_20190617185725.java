@@ -46,6 +46,7 @@ public class Game extends JPanel implements KeyListener, Runnable{
 		}
 		catch (IOException e) {
 			System.out.println("Hello?");
+
 		}
 		
 		for(int x=0;x<bgs.length;x++){

@@ -4,22 +4,20 @@ import java.awt.event.*;
 import java.io.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
-public class Game extends JPanel implements KeyListener, Runnable{
-
+public class Game extends JPanel implements KeyListener, Runnable
+{
 	private int heroY;
 	private int backX;
 	private JFrame frame;
 	Thread t;
 	private boolean gameOn;
 	BufferedImage spriteSheet;
-	BufferedImage[] heroBuffImgRunning = new BufferedImage[12];
-	Image[] heroImgsRunning = new Image[12];
+	BufferedImage[] marioBuffImg = new BufferedImage[12];
+	Image[] marioImgs = new Image[12];
 
-	BufferedImage[] heroBuffImgJumping = new BufferedImage[7];
-	Image[] heroImgsJumping = new Image[7];
+	boolean restart=false;
+	int imgCount=0;
 
-	boolean restart = false;
-	int imgCount = 0;
 
 	BufferedImage[] bgs = new BufferedImage[5];
 	Image[] bgImgs = new Image[5];
@@ -29,16 +27,16 @@ public class Game extends JPanel implements KeyListener, Runnable{
 	private boolean up = false;
 	private boolean down = false;
 
-	public Game(){
-
-		frame = new JFrame();
-		heroY = 325;
+	public Game()
+	{
+		frame=new JFrame();
+		heroY=100;
 		gameOn=true;
 
 		try {
-			spriteSheet = ImageIO.read(new File("res/dinosaur-sprite-sheet.png"));
-			for(int x=0;x<heroBuffImgRunning.length;x++)
-				heroBuffImgRunning[x]=spriteSheet.getSubimage(x*55+7,202,55,50);
+			spriteSheet = ImageIO.read(new File("res/d"));
+			for(int x=0;x<marioBuffImg.length;x++)
+				marioBuffImg[x]=spriteSheet.getSubimage(x*55+5,200,55,50);
 
 			for (int i=0;i<5;i++)
 				bgs[i] = ImageIO.read(new File("res/layer_0"+(i+1)+"_1920 x 1080.png" ));
@@ -46,18 +44,20 @@ public class Game extends JPanel implements KeyListener, Runnable{
 		}
 		catch (IOException e) {
 			System.out.println("Hello?");
+
 		}
 		
-		for(int x=0;x<bgs.length;x++){
+		for(int x=0;x<bgs.length;x++)
+		{
 			bgImgs[x]=bgs[x].getScaledInstance(1920, 500, Image.SCALE_DEFAULT);
 		}
 		
-		for(int x=0;x<heroImgsRunning.length;x++)
-			heroImgsRunning[x]=heroBuffImgRunning[x].getScaledInstance(120, 120, Image.SCALE_DEFAULT);
+		for(int x=0;x<marioImgs.length;x++)
+			marioImgs[x]=marioBuffImg[x].getScaledInstance(120, 120, Image.SCALE_DEFAULT);
 
 		frame.addKeyListener(this);
 		frame.add(this);
-		frame.setSize(800,540);
+		frame.setSize(800,500);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -74,7 +74,7 @@ public class Game extends JPanel implements KeyListener, Runnable{
 					//x+=3;
 					backX-=3;
 					imgCount++;
-					if(imgCount>heroBuffImgRunning.length)
+					if(imgCount>marioBuffImg.length)
 						imgCount=6;
 				}
 				if (left){
@@ -123,7 +123,7 @@ public class Game extends JPanel implements KeyListener, Runnable{
 			g2d.drawImage(myImage, backX-960, 0, null);
 			g2d.drawImage(myImage, backX+960, 0, null);
 		}
-		g2d.drawImage(heroImgsRunning[imgCount],100,heroY,null);
+		g2d.drawImage(marioImgs[imgCount],100,heroY,null);
 		//g2d.drawImage(spriteSheet,100,100,null);
 
 	}

@@ -4,8 +4,8 @@ import java.awt.event.*;
 import java.io.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
-public class Game extends JPanel implements KeyListener, Runnable{
-
+public class Game extends JPanel implements KeyListener, Runnable
+{
 	private int heroY;
 	private int backX;
 	private JFrame frame;
@@ -15,11 +15,12 @@ public class Game extends JPanel implements KeyListener, Runnable{
 	BufferedImage[] heroBuffImgRunning = new BufferedImage[12];
 	Image[] heroImgsRunning = new Image[12];
 
-	BufferedImage[] heroBuffImgJumping = new BufferedImage[7];
-	Image[] heroImgsJumping = new Image[7];
+	BufferedImage[] heroBuffImgJumping = new BufferedImage[12];
+	Image[] heroImgsRunning = new Image[12];
 
-	boolean restart = false;
-	int imgCount = 0;
+	boolean restart=false;
+	int imgCount=0;
+
 
 	BufferedImage[] bgs = new BufferedImage[5];
 	Image[] bgImgs = new Image[5];
@@ -29,10 +30,10 @@ public class Game extends JPanel implements KeyListener, Runnable{
 	private boolean up = false;
 	private boolean down = false;
 
-	public Game(){
-
-		frame = new JFrame();
-		heroY = 325;
+	public Game()
+	{
+		frame=new JFrame();
+		heroY=100;
 		gameOn=true;
 
 		try {
@@ -46,9 +47,11 @@ public class Game extends JPanel implements KeyListener, Runnable{
 		}
 		catch (IOException e) {
 			System.out.println("Hello?");
+
 		}
 		
-		for(int x=0;x<bgs.length;x++){
+		for(int x=0;x<bgs.length;x++)
+		{
 			bgImgs[x]=bgs[x].getScaledInstance(1920, 500, Image.SCALE_DEFAULT);
 		}
 		
@@ -57,7 +60,7 @@ public class Game extends JPanel implements KeyListener, Runnable{
 
 		frame.addKeyListener(this);
 		frame.add(this);
-		frame.setSize(800,540);
+		frame.setSize(800,500);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);

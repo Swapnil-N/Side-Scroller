@@ -46,6 +46,7 @@ public class Game extends JPanel implements KeyListener, Runnable{
 		}
 		catch (IOException e) {
 			System.out.println("Hello?");
+
 		}
 		
 		for(int x=0;x<bgs.length;x++){
@@ -57,7 +58,7 @@ public class Game extends JPanel implements KeyListener, Runnable{
 
 		frame.addKeyListener(this);
 		frame.add(this);
-		frame.setSize(800,540);
+		frame.setSize(800,550);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
