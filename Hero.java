@@ -23,6 +23,8 @@ public class Hero {
     private boolean jumpDown = false;
     
     private Rectangle heroHitBox;
+    private Rectangle collTop;
+    private Rectangle collBot;
 
     public Hero(){
 
@@ -30,6 +32,8 @@ public class Hero {
         heroX = 200;
 
         heroHitBox = new Rectangle(heroX, heroY+10, 120, 90);
+        collTop = new Rectangle(heroX, heroY + 55, 120, 45);
+        collBot = new Rectangle(heroX, heroY + 10, 120, 45);
 
         try {
             spriteSheet = ImageIO.read(new File("res/dinosaur-sprite-sheet.png"));
@@ -50,14 +54,14 @@ public class Hero {
     
     public void moveRight(){
         imgCount++;
-        if(imgCount>=heroBuffImgRunning.length)
-        imgCount=0;
+        if(imgCount/2>=heroBuffImgRunning.length)
+            imgCount=0;
     }
     
     public void live(){
         
         if (jumpUP){
-            heroY-=2;
+            heroY-=4;
             //if (jumpImgCount<6)
             //    jumpImgCount++;
             if (heroY<150){
@@ -66,7 +70,7 @@ public class Hero {
             }
         }
         if (jumpDown){
-            heroY+=2;
+            heroY+=4;
             //System.out.println(jumpImgCount);
             //if (jumpImgCount>0)
             //    jumpImgCount--;
@@ -88,8 +92,17 @@ public class Hero {
         return heroHitBox;
     }
 
+    public Rectangle collTop(){
+        return collTop;
+    }
+
+    public Rectangle collBot(){
+        return collBot;
+    }
+
+
     public Image getImage(){
-        return heroImgsRunning[imgCount];
+        return heroImgsRunning[imgCount/2];
     }
     
     public int getHeroY() {
