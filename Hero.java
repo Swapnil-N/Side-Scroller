@@ -1,4 +1,5 @@
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
@@ -8,18 +9,27 @@ public class Hero {
 
     private int heroY;
     private int heroX;
-    private int imgCount = 0;
+
     private BufferedImage spriteSheet;
 	private BufferedImage[] heroBuffImgRunning = new BufferedImage[12];
-	private Image[] heroImgsRunning = new Image[12];
+    private Image[] heroImgsRunning = new Image[12];
+    private BufferedImage[] heroBuffImgJumping = new BufferedImage[7];
+    private Image[] heroImgsJumping = new Image[7];
+    
+    private int imgCount = 0;
+    private int jumpImgCount = 0;
 
     private boolean jumpUP = false;
-	private boolean jumpDown = false;
+    private boolean jumpDown = false;
+    
+    private Rectangle heroHitBox;
 
     public Hero(){
 
         heroY = 325;
         heroX = 200;
+
+        heroHitBox = new Rectangle(heroX, heroY+10, 120, 90);
 
         try {
             spriteSheet = ImageIO.read(new File("res/dinosaur-sprite-sheet.png"));
@@ -27,24 +37,25 @@ public class Hero {
                 heroBuffImgRunning[x]=spriteSheet.getSubimage(x*55+7,202,55,50);
                 heroImgsRunning[x]=heroBuffImgRunning[x].getScaledInstance(120, 120, Image.SCALE_DEFAULT);
             }
+            /*for (int i=0;i<heroBuffImgJumping.length;i++){
+                heroBuffImgJumping[i] = spriteSheet.getSubimage(i*50+7, 56, 50, 50);
+                heroImgsJumping[i]= heroBuffImgJumping[i].getScaledInstance(120, 120, Image.SCALE_DEFAULT);   
+            }*/
+
         } catch (IOException e) {
             //TODO: handle exception
         }
 
     }
-
-    public Image getImage(){
-        return heroImgsRunning[imgCount];
-    }
-
+    
     public void moveRight(){
         imgCount++;
         if(imgCount>=heroBuffImgRunning.length)
-            imgCount=0;
+        imgCount=0;
     }
-
+    
     public void live(){
-
+        
         if (jumpUP){
             heroY-=2;
             //if (jumpImgCount<6)
@@ -63,15 +74,24 @@ public class Hero {
                 jumpDown = false;
             }
         }
-
+        heroHitBox = new Rectangle(heroX, heroY+10, 120, 90);
+        
     }
-
+    
     public void jump(){
         if (jumpUP == false && jumpDown == false)
-            jumpUP = true;
-
+        jumpUP = true;
+        
+    }
+    
+    public Rectangle getHeroHitBox(){
+        return heroHitBox;
     }
 
+    public Image getImage(){
+        return heroImgsRunning[imgCount];
+    }
+    
     public int getHeroY() {
         return this.heroY;
     }

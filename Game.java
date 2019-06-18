@@ -12,11 +12,7 @@ public class Game extends JPanel implements KeyListener, Runnable{
 	Thread t;
 	private boolean gameOn;
 	
-	BufferedImage[] heroBuffImgJumping = new BufferedImage[7];
-	Image[] heroImgsJumping = new Image[7];
-
 	boolean restart = false;
-	int jumpImgCount = 0;
 
 	BufferedImage[] bgs = new BufferedImage[5];
 	Image[] bgImgs = new Image[5];
@@ -29,32 +25,25 @@ public class Game extends JPanel implements KeyListener, Runnable{
 	private boolean up = false;
 	private boolean down = false;
 
+
 	public Game(){
 
 		frame = new JFrame();
 		gameOn=true;
 
 		hero = new Hero();
+		block1 = new Block(350, 275);
 
 		try {			
-			//for (int i=0;i<heroBuffImgJumping.length;i++)
-			//	heroBuffImgJumping[i] = spriteSheet.getSubimage(i*50+7, 56, 50, 50);
-
 			for (int i=0;i<5;i++)
 				bgs[i] = ImageIO.read(new File("res/layer_0"+(i+1)+"_1920 x 1080.png" ));
-
 		}
 		catch (IOException e) {
 			System.out.println("Hello?");
 		}
 		
 		for(int x=0;x<bgs.length;x++)
-			bgImgs[x]=bgs[x].getScaledInstance(1920, 500, Image.SCALE_DEFAULT);			
-
-		//for(int i=0;i<heroImgsJumping.length;i++)
-		//	heroImgsJumping[i]= heroBuffImgJumping[i].getScaledInstance(120, 120, Image.SCALE_DEFAULT);
-
-		block1 = new Block(350, 275);
+			bgImgs[x]=bgs[x].getScaledInstance(1920, 500, Image.SCALE_DEFAULT);	
 
 		frame.addKeyListener(this);
 		frame.add(this);
@@ -62,7 +51,7 @@ public class Game extends JPanel implements KeyListener, Runnable{
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		t=new Thread(this);
+		t = new Thread(this);
 		t.start();
 	}
 
@@ -120,6 +109,7 @@ public class Game extends JPanel implements KeyListener, Runnable{
 		//if (jumpDown || jumpUP)
 		//	g2d.drawImage(heroImgsJumping[jumpImgCount],100,heroY,null);
 		//g2d.drawImage(spriteSheet,100,100,null);
+		g2d.draw(hero.getHeroHitBox());
 
 	}
 	public void keyPressed(KeyEvent key){
