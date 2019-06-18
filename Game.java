@@ -20,6 +20,7 @@ public class Game extends JPanel implements KeyListener, Runnable{
 
 	boolean restart = false;
 	int imgCount = 0;
+	int jumpImgCount = 0;
 
 	BufferedImage[] bgs = new BufferedImage[5];
 	Image[] bgImgs = new Image[5];
@@ -27,7 +28,9 @@ public class Game extends JPanel implements KeyListener, Runnable{
 	private boolean right = false;
 	private boolean left = false;
 	private boolean up = false;
-	private boolean down = false;
+
+	private boolean jumpUP = false;
+	private boolean jumpDown = false;
 
 	public Game(){
 
@@ -39,6 +42,9 @@ public class Game extends JPanel implements KeyListener, Runnable{
 			spriteSheet = ImageIO.read(new File("res/dinosaur-sprite-sheet.png"));
 			for(int x=0;x<heroBuffImgRunning.length;x++)
 				heroBuffImgRunning[x]=spriteSheet.getSubimage(x*55+7,202,55,50);
+			
+			for (int i=0;i<heroBuffImgJumping.length;i++)
+				heroBuffImgJumping[i] = spriteSheet.getSubimage(i*50+7, 60, 50, 50);
 
 			for (int i=0;i<5;i++)
 				bgs[i] = ImageIO.read(new File("res/layer_0"+(i+1)+"_1920 x 1080.png" ));
@@ -48,12 +54,14 @@ public class Game extends JPanel implements KeyListener, Runnable{
 			System.out.println("Hello?");
 		}
 		
-		for(int x=0;x<bgs.length;x++){
+		for(int x=0;x<bgs.length;x++)
 			bgImgs[x]=bgs[x].getScaledInstance(1920, 500, Image.SCALE_DEFAULT);
-		}
 		
 		for(int x=0;x<heroImgsRunning.length;x++)
 			heroImgsRunning[x]=heroBuffImgRunning[x].getScaledInstance(120, 120, Image.SCALE_DEFAULT);
+
+		for(int i=0;i<heroImgsJumping.length;i++)
+			heroImgsJumping[i]= heroBuffImgJumping[i].getScaledInstance(120, 120, Image.SCALE_DEFAULT);
 
 		frame.addKeyListener(this);
 		frame.add(this);
@@ -71,31 +79,40 @@ public class Game extends JPanel implements KeyListener, Runnable{
 			if(gameOn){
 				//Math happens here!
 				if (right){
-					//x+=3;
 					backX-=3;
 					imgCount++;
-					if(imgCount>heroBuffImgRunning.length)
-						imgCount=6;
+					if(imgCount>=heroBuffImgRunning.length)
+						imgCount=0;
 				}
 				if (left){
-					//x-=3;
 					backX+=3;
 					imgCount--;
 					if(imgCount<0)
-						imgCount=5;
+						imgCount=11;
 				}
 				if (up){
-					heroY-=5;
-					imgCount--;
-					if(imgCount<0)
-						imgCount=10;
+					if (jumpUP == false && jumpDown == false)
+						jumpUP = true;
 				}
-				if (down){
-					heroY+=5;
-					imgCount++;
-					if(imgCount>10)
-						imgCount=0;
+				if (jumpUP){
+					heroY-=2;
+					System.out.println(jumpImgCount);
+					if (jumpImgCount<6)
+						jumpImgCount++;
+					if (heroY<250){
+						jumpUP = false;
+						jumpDown = true;
+					}
 				}
+				if (jumpDown){
+					heroY+=2;
+					if (jumpImgCount>0)
+						jumpImgCount--;
+					if (heroY>325){
+						jumpDown = false;
+					}
+				}
+
 				if(backX<-1920)
 					backX=0;
 				if(backX>1920)
@@ -123,13 +140,16 @@ public class Game extends JPanel implements KeyListener, Runnable{
 			g2d.drawImage(myImage, backX-960, 0, null);
 			g2d.drawImage(myImage, backX+960, 0, null);
 		}
-		g2d.drawImage(heroImgsRunning[imgCount],100,heroY,null);
+		//if (right)
+			g2d.drawImage(heroImgsRunning[imgCount],100,heroY,null);
+		if (up)
+			g2d.drawImage(heroImgsJumping[jumpImgCount],100,heroY,null);
 		//g2d.drawImage(spriteSheet,100,100,null);
 
 	}
 	public void keyPressed(KeyEvent key){
 
-		System.out.println(key.getKeyCode());
+		//System.out.println(key.getKeyCode());
 
 		if(key.getKeyCode()==39) // right
 			right = true;
