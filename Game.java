@@ -16,12 +16,12 @@ public class Game extends JPanel implements KeyListener, Runnable{
 	Image[] heroImgsJumping = new Image[7];
 
 	boolean restart = false;
-	int imgCount = 0;
 	int jumpImgCount = 0;
 
 	BufferedImage[] bgs = new BufferedImage[5];
 	Image[] bgImgs = new Image[5];
 
+	Hero hero;
 	Block block1;
 
 	private boolean right = false;
@@ -29,13 +29,12 @@ public class Game extends JPanel implements KeyListener, Runnable{
 	private boolean up = false;
 	private boolean down = false;
 
-	private boolean jumpUP = false;
-	private boolean jumpDown = false;
-
 	public Game(){
 
 		frame = new JFrame();
 		gameOn=true;
+
+		hero = new Hero();
 
 		try {			
 			//for (int i=0;i<heroBuffImgJumping.length;i++)
@@ -52,8 +51,8 @@ public class Game extends JPanel implements KeyListener, Runnable{
 		for(int x=0;x<bgs.length;x++)
 			bgImgs[x]=bgs[x].getScaledInstance(1920, 500, Image.SCALE_DEFAULT);			
 
-		for(int i=0;i<heroImgsJumping.length;i++)
-			heroImgsJumping[i]= heroBuffImgJumping[i].getScaledInstance(120, 120, Image.SCALE_DEFAULT);
+		//for(int i=0;i<heroImgsJumping.length;i++)
+		//	heroImgsJumping[i]= heroBuffImgJumping[i].getScaledInstance(120, 120, Image.SCALE_DEFAULT);
 
 		block1 = new Block(350, 275);
 
@@ -74,41 +73,19 @@ public class Game extends JPanel implements KeyListener, Runnable{
 				//Math happens here!
 				if (right){
 					backX-=3;
-					imgCount++;
 					block1.setBlockX(block1.getBlockX()-1);
-					if(imgCount>=heroBuffImgRunning.length)
-						imgCount=0;
+					hero.moveRight();
 				}
-				if (left){
+				/*if (left){
 					backX+=3;
 					imgCount--;
 					if(imgCount<0)
 						imgCount=11;
-				}
+				}*/
 				if (up){
-					if (jumpUP == false && jumpDown == false)
-						jumpUP = true;
+					hero.jump();
 				}
-				if (jumpUP){
-					heroY-=2;
-					System.out.println(jumpImgCount);
-					if (jumpImgCount<6)
-						jumpImgCount++;
-					if (heroY<150){
-						jumpUP = false;
-						jumpDown = true;
-					}
-				}
-				if (jumpDown){
-					heroY+=2;
-					System.out.println(jumpImgCount);
-					if (jumpImgCount>0)
-						jumpImgCount--;
-					if (heroY>325){
-						jumpDown = false;
-					}
-				}
-
+				hero.live();
 
 				if(backX<-1920)
 					backX=0;
@@ -139,7 +116,7 @@ public class Game extends JPanel implements KeyListener, Runnable{
 		}
 		g2d.drawImage(block1.getImage(), block1.getBlockX(), block1.getBlockY(), null);
 		//if (!jumpDown && !jumpUP)
-		g2d.drawImage(heroImgsRunning[imgCount],100,heroY,null);
+		g2d.drawImage(hero.getImage(), hero.getHeroX(), hero.getHeroY(), null);
 		//if (jumpDown || jumpUP)
 		//	g2d.drawImage(heroImgsJumping[jumpImgCount],100,heroY,null);
 		//g2d.drawImage(spriteSheet,100,100,null);
